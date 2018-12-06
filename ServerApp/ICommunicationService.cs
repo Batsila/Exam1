@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.Text;
+﻿using System.ServiceModel;
 
 namespace ServerApp
 {
-    [ServiceContract]
+    [ServiceContract(CallbackContract = typeof(ICommunicationServiceCallBack))]
     public interface ICommunicationService
     {
         [OperationContract]
-        void DoWork();
+        void Disconnect(UserData user);
+        [OperationContract]
+        void Connect(UserData user);
+        [OperationContract]
+        void DeleteUser(UserData user);
     }
 }

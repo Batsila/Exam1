@@ -60,7 +60,9 @@
     </ApplicationDefinition>
     <Compile Include="CommunicationService.cs" />
     <Compile Include="ICommunicationService.cs" />
+    <Compile Include="ICommunicationServiceCallBack.cs" />
     <Compile Include="UserData.cs" />
+    <Compile Include="UserService.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
