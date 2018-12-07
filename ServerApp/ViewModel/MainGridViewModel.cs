@@ -27,21 +27,21 @@ namespace ServerApp.ViewModel
             {
                 new UserData
                 {
-                    Id = 1,
+                    //IP = 1,
                     FirstName = "test",
                     LastName = "test",
                     Online = true
                 },
                 new UserData
                 {
-                    Id = 2,
+                    //IP = 2,
                     FirstName = "test",
                     LastName = "test",
                     Online = true
                 },
                 new UserData
                 {
-                    Id = 3,
+                    //IP = 3,
                     FirstName = "test",
                     LastName = "test",
                     Online = true
@@ -66,7 +66,7 @@ namespace ServerApp.ViewModel
         {
             var userData = new UserData
             {
-                Id = _users.Count + 1,
+                //IP = _users.Count + 1,
                 FirstName = firstName,
                 LastName = lastName,
                 Online = true
