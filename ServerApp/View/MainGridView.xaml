@@ -3,37 +3,59 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:prism="http://prismlibrary.com/"
-             prism:ViewModelLocator.AutoWireViewModel="True"
-             xmlns:local="clr-namespace:ServerApp.View"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             prism:ViewModelLocator.AutoWireViewModel="True">
+    
+    <UserControl.Resources>
+        <Style x:Key="AlternatingListViewItemStyle" TargetType="{x:Type ListViewItem}">
+            <Style.Triggers>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                    <Setter Property="Background" Value="DarkGray"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    
     <Grid>
-        <Grid Background="DarkGray" Margin="10,10,10,10">
-            <DataGrid x:Name="grid" HorizontalAlignment="Left" Height="349" 
-                  Margin="10,10,0,0" VerticalAlignment="Top" Width="532" 
-                  CanUserAddRows="False"
+        <ListView Grid.ColumnSpan="3" ItemsSource="{Binding Data}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                  AlternationCount="2" ItemContainerStyle="{StaticResource AlternatingListViewItemStyle}">
+            <ListView.View>
+                <GridView AllowsColumnReorder="False">
+                    <GridViewColumn DisplayMemberBinding="{Binding Address}" Header="IP Address" Width="100"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Vendor}" Header="Vendor" Width="125"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Model}" Header="Model Name" Width="100"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding IsActive}" Header="Realtime Monitoring" Width="100"/>
+                </GridView>
+            </ListView.View>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseRightButtonUp" >
+                    <i:InvokeCommandAction Command="{Binding DeleteItemCommand}" CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </ListView>
+        
+        <!--<DataGrid ItemsSource="{Binding Data}" CanUserAddRows="False"
                   AlternationCount="2" CanUserResizeColumns="False"
                   CanUserResizeRows="False" AutoGenerateColumns="False">
-                <DataGrid.RowStyle>
-                    <Style TargetType="DataGridRow">
-                        <Style.Triggers>
-                            <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                                <Setter Property="Background" Value="DarkGray"></Setter>
-                            </Trigger>
-                            <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                                <Setter Property="Background" Value="Gray"></Setter>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </DataGrid.RowStyle>
-                <DataGrid.Columns>
-                    <DataGridTextColumn Width="200" Header="IP" Binding="{Binding Id}" />
-                    <DataGridTextColumn Width="120" Header="First Name" Binding="{Binding FirstName}" />
-                    <DataGridTextColumn Width="120" Header="Last Name" Binding="{Binding LastName}" />
-                    <DataGridTextColumn Width="80" Header="Online" Binding="{Binding Online}" />
-                </DataGrid.Columns>
-            </DataGrid>
-        </Grid>
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                            <Setter Property="Background" Value="DarkGray"></Setter>
+                        </Trigger>
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                            <Setter Property="Background" Value="Gray"></Setter>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="200" Header="IP" Binding="{Binding Address}" />
+                <DataGridTextColumn Width="120" Header="First Name" Binding="{Binding Vendor}" />
+                <DataGridTextColumn Width="120" Header="Last Name" Binding="{Binding Model}" />
+                <DataGridTextColumn Width="80" Header="Online" Binding="{Binding IsActive}" />
+            </DataGrid.Columns>
+        </DataGrid>-->
     </Grid>
 </UserControl>

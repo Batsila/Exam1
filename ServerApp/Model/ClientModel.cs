@@ -9,6 +9,13 @@ namespace ServerApp.Model
 {
     public class ClientModel : BindableBase
     {
+        private int _id;
+        public int Id
+        {
+            get { return _id; }
+            set { SetProperty(ref _id, value); }
+        }
+
         private string _address;
         public string Address
         {

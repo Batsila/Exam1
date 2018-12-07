@@ -3,6 +3,7 @@ using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Regions;
 using Prism.Unity;
+using ServerApp.Managers;
 using ServerApp.View;
 using ServerApp.ViewModel;
 using System;
@@ -23,6 +24,7 @@ namespace ServerApp
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterSingleton<CommunicationManager>();
         }
 
         protected override void ConfigureViewModelLocator()

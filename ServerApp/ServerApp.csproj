@@ -80,9 +80,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-
+    <Compile Include="Helpers\StaticData.cs" />
+    <Compile Include="Managers\CommunicationManager.cs" />
     <Compile Include="Model\ClientModel.cs" />
-    <Compile Include="UserData.cs" />
     <Compile Include="ViewModel\MainGridViewModel.cs" />
     <Compile Include="View\MainGridView.xaml.cs">
       <DependentUpon>MainGridView.xaml</DependentUpon>

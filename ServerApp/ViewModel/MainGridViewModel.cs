@@ -1,79 +1,63 @@
-﻿using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
+﻿using Prism.Commands;
+using Prism.Mvvm;
+using ServerApp.Helpers;
+using ServerApp.Managers;
+using ServerApp.Model;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServerApp.ViewModel
 {
     public class MainGridViewModel : BindableBase
     {
-        private string _text;
-        public string Text
+        private readonly CommunicationManager _communicationManager;
+
+        public ObservableCollection<ClientModel> Data { get; private set; }
+
+        #region DeleteItemCommand
+
+        public DelegateCommand<ClientModel> DeleteItemCommand { get; private set; }
+
+        private void DeleteItemCommandExecute(ClientModel e)
         {
-            get { return _text; }
-            set { _text = value; }
+            if (e == null || Data == null)
+                return;
+
+            Data.Remove(e);
+            DeleteItemCommand.RaiseCanExecuteChanged();
+
+            _communicationManager.ItemDeleted(e);
+        }
+
+        private bool DeleteItemCommandCanExecute(ClientModel e)
+        {
+            return Data != null && Data.Any();
+        }
+
+        #endregion
+
+        public MainGridViewModel(CommunicationManager communicationManager)
+        {
+            _communicationManager = communicationManager;
+
+            var data = StaticData.GetData();
+            Data = new ObservableCollection<ClientModel>(data);
+
+            DeleteItemCommand = new DelegateCommand<ClientModel>(DeleteItemCommandExecute, DeleteItemCommandCanExecute);
+
+            _communicationManager.ItemAdding += CommunicationManagerItemAdding;
         }
 
 
-
-        //private ServiceHost _host;
-        public List<UserData> _users { get; private set; }
-
-        public MainGridViewModel()
+        private void CommunicationManagerItemAdding(object sender, ClientModel e)
         {
-            _users = new List<UserData>
-            {
-                new UserData
-                {
-                    //IP = 1,
-                    FirstName = "test",
-                    LastName = "test",
-                    Online = true
-                },
-                new UserData
-                {
-                    //IP = 2,
-                    FirstName = "test",
-                    LastName = "test",
-                    Online = true
-                },
-                new UserData
-                {
-                    //IP = 3,
-                    FirstName = "test",
-                    LastName = "test",
-                    Online = true
-                }
-            };
-            //grid.ItemsSource = _users;
-            //_host = new ServiceHost(typeof(ServerConnectionService));
-            //_host.Open();
-        }
+            if (e == null)
+                return;
 
-        //private void GridMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        //{
-        //    var userData = grid.SelectedItem as UserData;
-        //    if (userData != null)
-        //    {
-        //        MessageBox.Show("ID: " + userData.Id + "\n Status: " + userData.Online
-        //            + "\n First Name: " + userData.FirstName + "\n Last Name: " + userData.LastName);
-        //    }
-        //}
+            if (Data == null)
+                Data = new ObservableCollection<ClientModel>();
 
-        public void AddUser(string firstName, string lastName)
-        {
-            var userData = new UserData
-            {
-                //IP = _users.Count + 1,
-                FirstName = firstName,
-                LastName = lastName,
-                Online = true
-            };
-            _users.Add(userData);
-            //grid.Items.Refresh();
-            //var row = grid.ItemContainerGenerator.ContainerFromItem(userData);
+            Data.Add(e);
         }
     }
 }
