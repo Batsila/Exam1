@@ -1,23 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Runtime.Remoting.Proxies;
 using ServerApp;
+using System.Windows;
 
 namespace ClientApp
 {
-    class ClientServise : ICommunicationServiceCallBack
+    class ClientServise
     {
-        public void Connect(UserData user)
+        public void Connect()
         {
             MessageBox.Show("Connect new user");
         }
 
-        public void Disconnect(UserData user)
+        public void Disconnect()
         {
-            MessageBox.Show("Disconnect this user");
+            MessageBox.Show("User is disconnect");
         }
     }
 }

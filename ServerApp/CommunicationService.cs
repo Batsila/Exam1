@@ -1,42 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.Text;
+﻿using System.ServiceModel;
 
 namespace ServerApp
 {
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
-    public class CommunicationService : ICommunicationService
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Single)]
+    public class CommunicationService : ICommunicationService 
     {
-        private UserService userService;
-
+        private readonly UserService _userService;
         public CommunicationService()
         {
-            userService = new UserService();
-        }
+            _userService = new UserService();
 
-        private ICommunicationServiceCallBack CallBack
-        {
-            get { return OperationContext.Current.GetCallbackChannel<ICommunicationServiceCallBack>(); }
         }
 
         public void Connect(UserData user)
         {
-            CallBack.Connect(user);
-            userService.AddNewItem(user);
+            var connection = OperationContext.Current.GetCallbackChannel<ICommunicationServiceCallBack>();
+            _userService.AddNewItem(user);
+            connection.Connect();
         }
 
         public void DeleteUser(UserData user)
         {
-            userService.RemoveItem(user);
+            _userService.RemoveItem(user);
+            var connection = OperationContext.Current.GetCallbackChannel<ICommunicationServiceCallBack>();
+            connection.Disconnect();
         }
 
         public void Disconnect(UserData user)
         {
-            CallBack.Disconnect(user);
-            userService.Disconnect(user);
+            _userService.Disconnect(user);
+            var connection = OperationContext.Current.GetCallbackChannel<ICommunicationServiceCallBack>();
+            connection.Disconnect();
         }
 
     }

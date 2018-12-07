@@ -2,7 +2,7 @@
 
 namespace ServerApp
 {
-    [ServiceContract(CallbackContract = typeof(ICommunicationServiceCallBack))]
+    //[ServiceContract(CallbackContract = typeof(ICommunicationServiceCallBack))]
     public interface ICommunicationService
     {
         [OperationContract]

@@ -1,4 +1,5 @@
-﻿using ServerApp;
+﻿using System;
+using ServerApp;
 using System.Collections.Generic;
 using System.ServiceModel;
 using System.Windows;
@@ -18,9 +19,6 @@ namespace DataGrid
             InitializeComponent();
             userService = new UserService();
             userService.AddNewItem(new UserData(1, "Yura", "Varlakov"));
-            //userService.AddNewItem(new UserData(2, "NotYura", "Varlakov"));
-            //userService.AddNewItem(new UserData(3, "Yura", "NotVarlakov"));
-            //userService.AddNewItem(new UserData(4, "NotYura", "NotVarlakov"));
         }
 
         //Загрузка содержимого таблицы

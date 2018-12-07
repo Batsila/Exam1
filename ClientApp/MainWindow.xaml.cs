@@ -1,44 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using ServerApp;
 using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using ServerApp;
-
 namespace ClientApp
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [CallbackBehavior(UseSynchronizationContext = false)]
     public partial class MainWindow : Window
-    {
-        private ClientServise clientServise;
+    { 
+        private readonly ClientServise _clientServise;
+
         public MainWindow()
         {
             InitializeComponent();
-            clientServise = new ClientServise();
-            using (var host = new ServiceHost(typeof(CommunicationService)))
-            {
-                host.Open();
-                
-            }
+            _clientServise = new ClientServise();
+            
         }
 
         public void Send(object sender, RoutedEventArgs e)
         {
             /*MessageBox.Show("First Name: " + FirstNameInput.Text 
                 + "\n Last Name: " + LastNameInput.Text);*/
-                clientServise.Connect(new UserData(1, FirstNameInput.Text, LastNameInput.Text));
+            /*using (var host = new ServiceHost(typeof(CommunicationService)))
+            {
+                host.Open();
+                //InstanceContext instanceContext = new InstanceContext(new ClientServise());
+                
+
+            }*/
+            CommunicationService service = new CommunicationService();
+            service.Connect(new UserData(1, FirstNameInput.Text, LastNameInput.Text));
+
         }
     }
 }
