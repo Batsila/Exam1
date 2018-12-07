@@ -1,8 +1,31 @@
 ﻿<Window x:Class="DataGrid.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="ServerApp" Height="411.97" Width="579.343" Background="Black">
-    <Grid Background="DarkGray" Margin="10,10,12,4">
-        <DataGrid x:Name="grid" HorizontalAlignment="Left" Height="341" Margin="10,10,0,0" VerticalAlignment="Top" Width="529" Loaded="GridLoaded" MouseUp="GridMouseUp"/>
+        Title="ServerApp" Height="420" Width="580" Background="Black">
+    <Grid Background="DarkGray" Margin="10,10,10,10">
+        <DataGrid x:Name="grid" HorizontalAlignment="Left" Height="349" 
+                  Margin="10,10,0,0" VerticalAlignment="Top" Width="532" 
+                  CanUserAddRows="False" MouseUp="GridMouseUp"
+                  AlternationCount="2" CanUserResizeColumns="False"
+                  CanUserResizeRows="False" AutoGenerateColumns="False">
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                            <Setter Property="Background" Value="DarkGray"></Setter>
+                        </Trigger>
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                            <Setter Property="Background" Value="Gray"></Setter>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="200" Header="IP" Binding="{Binding Id}" />
+                <DataGridTextColumn Width="120" Header="First Name" Binding="{Binding FirstName}" />
+                <DataGridTextColumn Width="120" Header="Last Name" Binding="{Binding LastName}" />
+                <DataGridTextColumn Width="80" Header="Online" Binding="{Binding Online}" />
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>

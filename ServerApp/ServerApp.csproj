@@ -58,11 +58,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="CommunicationService.cs" />
-    <Compile Include="ICommunicationService.cs" />
-    <Compile Include="ICommunicationServiceCallBack.cs" />
+    <Compile Include="ServerConnectionService.cs" />
     <Compile Include="UserData.cs" />
-    <Compile Include="UserService.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -101,6 +98,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ConnectionService\ConnectionService.csproj">
+      <Project>{20e143c9-f659-439a-b3df-100944294f9b}</Project>
+      <Name>ConnectionService</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

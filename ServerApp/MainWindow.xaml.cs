@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.ServiceModel;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace DataGrid
 {
@@ -12,27 +14,63 @@ namespace DataGrid
     /// </summary>
     public partial class MainWindow : Window
     {
-        ServiceHost serviceHost;
-        private UserService userService;
+        private ServiceHost _host;
+        public List<UserData> _users { get; private set; }
+
         public MainWindow()
         {
             InitializeComponent();
-            userService = new UserService();
-            userService.AddNewItem(new UserData(1, "Yura", "Varlakov"));
+            _users = new List<UserData>
+            {
+                new UserData
+                {
+                    Id = 1,
+                    FirstName = "test",
+                    LastName = "test",
+                    Online = true
+                },
+                new UserData
+                {
+                    Id = 2,
+                    FirstName = "test",
+                    LastName = "test",
+                    Online = true
+                },
+                new UserData
+                {
+                    Id = 3,
+                    FirstName = "test",
+                    LastName = "test",
+                    Online = true
+                }
+            };
+            grid.ItemsSource =  _users;
+            _host = new ServiceHost(typeof(ServerConnectionService));
+            _host.Open();
         }
 
-        //Загрузка содержимого таблицы
-        private void GridLoaded(object sender, RoutedEventArgs e)
-        {
-            grid.ItemsSource = userService.GetUserList();
-        }
-
-        //Получаем данные из таблицы
         private void GridMouseUp(object sender, MouseButtonEventArgs e)
         {
-            UserData path = grid.SelectedItem as UserData;
-            MessageBox.Show("ID: " + path.Id + "\n Status: " + path.Online + "\n First Name: " + path.FirstName + "\n Last Name: " + path.LastName);
-            MessageBox.Show("Всего записей: " + userService.GetUserList().Count);
+            var userData = grid.SelectedItem as UserData;
+            if (userData != null)
+            {
+                MessageBox.Show("ID: " + userData.Id + "\n Status: " + userData.Online
+                    + "\n First Name: " + userData.FirstName + "\n Last Name: " + userData.LastName);
+            }
+        }
+
+        public void AddUser(string firstName, string lastName)
+        {
+            var userData = new UserData
+            {
+                Id = _users.Count + 1,
+                FirstName = firstName,
+                LastName = lastName,
+                Online = true
+            };
+            _users.Add(userData);
+            grid.Items.Refresh();
+            var row = grid.ItemContainerGenerator.ContainerFromItem(userData);
         }
     }
 
