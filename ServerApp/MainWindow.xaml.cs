@@ -1,6 +1,7 @@
 ﻿using System;
 using ServerApp;
 using System.Collections.Generic;
+using System.Net;
 using System.ServiceModel;
 using System.Windows;
 using System.Windows.Input;
@@ -24,21 +25,21 @@ namespace DataGrid
             {
                 new UserData
                 {
-                    Id = 1,
+                    IP = GetIP(),
                     FirstName = "test",
                     LastName = "test",
                     Online = true
                 },
                 new UserData
                 {
-                    Id = 2,
+                    IP = GetIP(),
                     FirstName = "test",
                     LastName = "test",
                     Online = true
                 },
                 new UserData
                 {
-                    Id = 3,
+                    IP = GetIP(),
                     FirstName = "test",
                     LastName = "test",
                     Online = true
@@ -54,8 +55,8 @@ namespace DataGrid
             var userData = grid.SelectedItem as UserData;
             if (userData != null)
             {
-                MessageBox.Show("ID: " + userData.Id + "\n Status: " + userData.Online
-                    + "\n First Name: " + userData.FirstName + "\n Last Name: " + userData.LastName);
+                MessageBox.Show("IP: " + userData.IP + "\nStatus: " + userData.Online
+                    + "\nFirst Name: " + userData.FirstName + "\nLast Name: " + userData.LastName);
             }
         }
 
@@ -63,7 +64,7 @@ namespace DataGrid
         {
             var userData = new UserData
             {
-                Id = _users.Count + 1,
+                IP = GetIP(),
                 FirstName = firstName,
                 LastName = lastName,
                 Online = true
@@ -71,6 +72,13 @@ namespace DataGrid
             _users.Add(userData);
             grid.Items.Refresh();
             var row = grid.ItemContainerGenerator.ContainerFromItem(userData);
+        }
+
+        public string GetIP()
+        {
+            string hostName = Dns.GetHostName();
+            string myIP = Dns.GetHostByName(hostName).AddressList[0].ToString();
+            return myIP;
         }
     }
 
