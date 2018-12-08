@@ -15,6 +15,7 @@ namespace ServerApp.Managers
             _comService = new CommunicationDuplexService();
             _comService.ItemAddRequest += ServiceItemAddRequest;
 
+            // TODO: move to config file
             var baseAddress = new Uri("net.tcp://localhost:9000/Service");
             _serviceHost = new ServiceHost(_comService, baseAddress);
 

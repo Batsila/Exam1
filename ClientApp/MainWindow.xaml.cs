@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.ServiceModel;
 using System.Windows;
+
 namespace ClientApp
 {
     /// <summary>
@@ -9,6 +10,9 @@ namespace ClientApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        // TODO: Shall have an indication to Online / Offline connection.
+
+
         private DuplexServiceClient _proxy;
 
         public MainWindow()
@@ -19,6 +23,8 @@ namespace ClientApp
 
         public void BtnSendClick(object sender, RoutedEventArgs e)
         {
+            // TODO: Add exception handling and status change
+
             _proxy.AddItem(new Shared.DataItem {
 
                 Address = tbAddress.Text,
@@ -29,10 +35,6 @@ namespace ClientApp
 
             });
         }
-
-
-
-
 
         private void InitializeClient()
         {
@@ -63,6 +65,7 @@ namespace ClientApp
 
         private void CallbackItemDeleted(object sender, Shared.DataItem e)
         {
+            // TODO: Detailed information
             MessageBox.Show($"Item with id {e.Id} was deleted");
         }
 

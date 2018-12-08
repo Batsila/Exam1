@@ -24,5 +24,9 @@ namespace ServerApp.View
         {
             InitializeComponent();
         }
+
+        // TODO: Are you sure to delete row?
+        // TODO: One of the columns shall contains an image / ICON that representing an Online / Offline connection.
+        // TODO: table colors, column alignment, selected row
     }
 }
