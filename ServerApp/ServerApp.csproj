@@ -83,6 +83,7 @@
     <Compile Include="Helpers\StaticData.cs" />
     <Compile Include="Managers\CommunicationManager.cs" />
     <Compile Include="Model\ClientModel.cs" />
+    <Compile Include="Service\CommunicationDuplexService.cs" />
     <Compile Include="ViewModel\MainGridViewModel.cs" />
     <Compile Include="View\MainGridView.xaml.cs">
       <DependentUpon>MainGridView.xaml</DependentUpon>
@@ -132,9 +133,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ConnectionService\ConnectionService.csproj">
+    <ProjectReference Include="..\ConnectionService\Shared.csproj">
       <Project>{20e143c9-f659-439a-b3df-100944294f9b}</Project>
-      <Name>ConnectionService</Name>
+      <Name>Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
