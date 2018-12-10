@@ -37,6 +37,23 @@ namespace CommandsHandler
     }
 
     [DataContract]
+    public class ZoomCommand : MouseCommand
+    {
+        [DataMember]
+        public double Quantity { get; set; }
+
+        [DataMember]
+        public override string CommandName { get; set; }
+
+        public ZoomCommand(string name, double quantity)
+        {
+            CommandName = name;
+            Quantity = quantity;
+        }
+
+    }
+
+    [DataContract]
     public class MouseMoveCommand : MouseCommand
     {
         [DataMember]

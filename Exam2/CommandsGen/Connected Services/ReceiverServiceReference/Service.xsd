@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://localhost:65413/CommandsReceiverService.svc?xsd=xsd1" namespace="http://schemas.datacontract.org/2004/07/CommandsHandler" />
+  <xs:import schemaLocation="http://localhost:8733/Design_Time_Addresses/Service?xsd=xsd1" namespace="http://schemas.datacontract.org/2004/07/CommandsHandler" />
   <xs:element name="SendCommands">
     <xs:complexType>
       <xs:sequence>

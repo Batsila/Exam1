@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CommandsGen.HandlerService {
+namespace CommandsGen.ServiceReference {
     using System.Runtime.Serialization;
     using System;
     
@@ -17,8 +17,8 @@ namespace CommandsGen.HandlerService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="MouseCommand", Namespace="http://schemas.datacontract.org/2004/07/CommandsHandler")]
     [System.SerializableAttribute()]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(CommandsGen.HandlerService.StopCommand))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(CommandsGen.HandlerService.MouseMoveCommand))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(CommandsGen.ServiceReference.StopCommand))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(CommandsGen.ServiceReference.MouseMoveCommand))]
     public partial class MouseCommand : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
@@ -64,14 +64,14 @@ namespace CommandsGen.HandlerService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="StopCommand", Namespace="http://schemas.datacontract.org/2004/07/CommandsHandler")]
     [System.SerializableAttribute()]
-    public partial class StopCommand : CommandsGen.HandlerService.MouseCommand {
+    public partial class StopCommand : CommandsGen.ServiceReference.MouseCommand {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="MouseMoveCommand", Namespace="http://schemas.datacontract.org/2004/07/CommandsHandler")]
     [System.SerializableAttribute()]
-    public partial class MouseMoveCommand : CommandsGen.HandlerService.MouseCommand {
+    public partial class MouseMoveCommand : CommandsGen.ServiceReference.MouseCommand {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private double QuantityField;
@@ -91,23 +91,23 @@ namespace CommandsGen.HandlerService {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="HandlerService.IReceiver")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference.IReceiver")]
     public interface IReceiver {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IReceiver/SendCommands", ReplyAction="http://tempuri.org/IReceiver/SendCommandsResponse")]
-        bool SendCommands(CommandsGen.HandlerService.MouseCommand[] command);
+        bool SendCommands(CommandsGen.ServiceReference.MouseCommand[] command);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IReceiver/SendCommands", ReplyAction="http://tempuri.org/IReceiver/SendCommandsResponse")]
-        System.Threading.Tasks.Task<bool> SendCommandsAsync(CommandsGen.HandlerService.MouseCommand[] command);
+        System.Threading.Tasks.Task<bool> SendCommandsAsync(CommandsGen.ServiceReference.MouseCommand[] command);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IReceiverChannel : CommandsGen.HandlerService.IReceiver, System.ServiceModel.IClientChannel {
+    public interface IReceiverChannel : CommandsGen.ServiceReference.IReceiver, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class ReceiverClient : System.ServiceModel.ClientBase<CommandsGen.HandlerService.IReceiver>, CommandsGen.HandlerService.IReceiver {
+    public partial class ReceiverClient : System.ServiceModel.ClientBase<CommandsGen.ServiceReference.IReceiver>, CommandsGen.ServiceReference.IReceiver {
         
         public ReceiverClient() {
         }
@@ -128,11 +128,11 @@ namespace CommandsGen.HandlerService {
                 base(binding, remoteAddress) {
         }
         
-        public bool SendCommands(CommandsGen.HandlerService.MouseCommand[] command) {
+        public bool SendCommands(CommandsGen.ServiceReference.MouseCommand[] command) {
             return base.Channel.SendCommands(command);
         }
         
-        public System.Threading.Tasks.Task<bool> SendCommandsAsync(CommandsGen.HandlerService.MouseCommand[] command) {
+        public System.Threading.Tasks.Task<bool> SendCommandsAsync(CommandsGen.ServiceReference.MouseCommand[] command) {
             return base.Channel.SendCommandsAsync(command);
         }
     }

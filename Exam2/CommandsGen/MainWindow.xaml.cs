@@ -1,4 +1,4 @@
-﻿using CommandsGen.HandlerService;
+﻿using CommandsGen.ServiceReference;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -62,38 +62,41 @@ namespace CommandsGen
         private void Grid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             gPad.MouseMove -= Grid_MouseMove;
-
             _client.SendCommands(new MouseCommand[] { new StopCommand() });
         }
 
-
         private void Grid_MouseMove(object sender, MouseEventArgs e)
         {
-            var commands = new MouseCommand[2];
+            var commands = new List<MouseCommand>();
 
             var newPosition = e.GetPosition(gPad);
 
             var deltaX = newPosition.X - _prevPosition.X;
             if (deltaX > 0)
-                commands[0] = new MouseMoveCommand { CommandName = "RIGHT", Quantity = deltaX };
+                commands.Add(new MouseMoveCommand { CommandName = "RIGHT", Quantity = deltaX });
             else if (deltaX < 0)
-                commands[0] = new MouseMoveCommand { CommandName = "LEFT", Quantity = Math.Abs(deltaX) };
+                commands.Add(new MouseMoveCommand { CommandName = "LEFT", Quantity = Math.Abs(deltaX) });
 
 
             var deltaY = newPosition.Y - _prevPosition.Y;
             if (deltaY > 0)
-                commands[1] = new MouseMoveCommand { CommandName = "UP", Quantity = deltaY };
+                commands.Add(new MouseMoveCommand { CommandName = "DOWN", Quantity = deltaY });
             else if (deltaY < 0)
-                commands[1] = new MouseMoveCommand { CommandName = "DOWN", Quantity = Math.Abs(deltaY) };
+                commands.Add(new MouseMoveCommand { CommandName = "UP", Quantity = Math.Abs(deltaY) });
 
             _prevPosition = newPosition;
 
-            _client.SendCommands(commands);
+            _client.SendCommands(commands.ToArray());
         }
 
         private void Grid_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-            // TODO: Add wheel event
+            var delta = e.Delta;
+            // change type to ZoomCommand
+            if (delta > 0)
+                _client.SendCommands(new MouseCommand[] { new MouseMoveCommand { CommandName = "IN", Quantity = delta } });
+            else if (delta < 0)
+                _client.SendCommands(new MouseCommand[] { new MouseMoveCommand { CommandName = "OUT", Quantity = Math.Abs(delta) } });
         }
 
         protected override void OnClosing(CancelEventArgs e)
