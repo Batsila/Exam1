@@ -5,6 +5,7 @@ using ServerApp.Managers;
 using ServerApp.Model;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 
 namespace ServerApp.ViewModel
 {
@@ -23,10 +24,15 @@ namespace ServerApp.ViewModel
             if (e == null || Data == null)
                 return;
 
-            Data.Remove(e);
-            DeleteItemCommand.RaiseCanExecuteChanged();
-
-            _communicationManager.ItemDeleted(e);
+           
+            MessageBoxResult result =
+                MessageBox.Show("Are you sure to delete row?", "", MessageBoxButton.OKCancel);
+            if (result == MessageBoxResult.OK)
+            {
+                Data.Remove(e);
+                DeleteItemCommand.RaiseCanExecuteChanged();
+                _communicationManager.ItemDeleted(e);
+            }
         }
 
         private bool DeleteItemCommandCanExecute(ClientModel e)

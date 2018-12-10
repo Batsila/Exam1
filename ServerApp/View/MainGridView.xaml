@@ -22,6 +22,13 @@
                   AlternationCount="2" ItemContainerStyle="{StaticResource AlternatingListViewItemStyle}">
             <ListView.View>
                 <GridView AllowsColumnReorder="False">
+                    <GridViewColumn Header="Status" Width="50">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding Status}" Width="25" Height="25" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding Address}" Header="IP Address" Width="100"/>
                     <GridViewColumn DisplayMemberBinding="{Binding Vendor}" Header="Vendor" Width="125"/>
                     <GridViewColumn DisplayMemberBinding="{Binding Model}" Header="Model Name" Width="100"/>

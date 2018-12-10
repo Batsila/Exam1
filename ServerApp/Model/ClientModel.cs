@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace ServerApp.Model
 {
@@ -43,5 +46,23 @@ namespace ServerApp.Model
             get { return _isActive; }
             set { SetProperty(ref _isActive, value); }
         }
+
+        private string _status;
+
+        public string Status
+        {
+            get {
+                if (_isActive)
+                {
+                    return _status = "D:\\Job\\Exam1\\ServerApp\\Properties\\online.png";
+
+                }
+                else
+                {
+                    return _status = "D:\\Job\\Exam1\\ServerApp\\Properties\\offline.png";
+                }
+            }
+        }
+
     }
 }
