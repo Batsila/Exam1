@@ -1,10 +1,11 @@
 ﻿using ServerApp.Model;
 using System.Collections.Generic;
-using System.Windows.Controls;
-using System.Windows.Media.Imaging;
 
 namespace ServerApp.Helpers
 {
+    /// <summary>
+    /// Helper class that adds test entries to the table.
+    /// </summary>
     static class StaticData
     {
         public static IEnumerable<ClientModel> GetData()

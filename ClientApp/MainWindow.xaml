@@ -49,11 +49,7 @@
             <Button x:Name="btnSend" Content="Send" HorizontalAlignment="Center" Margin="0,10,0,10" Width="75" Click="BtnSendClick"/>
 
         </StackPanel>
-        <Grid Margin="0,0,327,181">
-            <Label Content="Status: "></Label>
-            <Label x:Name="lbConnectStatus" Content="No Connect" HorizontalAlignment="Left" Margin="46,0,0,0" VerticalAlignment="Top"/>
-        </Grid>
-        <Grid HorizontalAlignment="Left" Height="28" Margin="155,0,0,0" VerticalAlignment="Top" Width="122">
+        <Grid HorizontalAlignment="Left" Height="28" Margin="10,0,0,0" VerticalAlignment="Top" Width="122">
             <Label Content="Server status:" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="-0.098,-0.349"/>
             <Label x:Name="lbServerStatus" HorizontalAlignment="Left" Margin="80,0,0,0" VerticalAlignment="Top"/>
         </Grid>

@@ -9,6 +9,9 @@ using System.Windows;
 
 namespace ServerApp.ViewModel
 {
+    /// <summary>
+    /// MainGridViewModel class
+    /// </summary>
     public class MainGridViewModel : BindableBase
     {
         private readonly CommunicationManager _communicationManager;
@@ -19,13 +22,16 @@ namespace ServerApp.ViewModel
 
         public DelegateCommand<ClientModel> DeleteItemCommand { get; private set; }
 
+        /// <summary>
+        /// Calls a delegate to delete a user from the table with confirmation for the action
+        /// </summary>
         private void DeleteItemCommandExecute(ClientModel e)
         {
             if (e == null || Data == null)
                 return;
 
            
-            MessageBoxResult result =
+            var result =
                 MessageBox.Show("Are you sure to delete row?", "", MessageBoxButton.OKCancel);
             if (result == MessageBoxResult.OK)
             {
@@ -54,7 +60,9 @@ namespace ServerApp.ViewModel
             _communicationManager.ItemAdding += CommunicationManagerItemAdding;
         }
 
-
+        /// <summary>
+        /// Add new user in the table handler
+        /// </summary>
         private void CommunicationManagerItemAdding(object sender, ClientModel e)
         {
             if (e == null)

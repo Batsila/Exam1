@@ -3,6 +3,9 @@ using System.ServiceModel;
 
 namespace ClientApp.Service
 {
+    /// <summary>
+    /// The implementation of the duplex callback service interface
+    /// </summary>
     internal class DuplexServiceClient : DuplexClientBase<IServerDuplexService>, IServerDuplexService
     {
         public DuplexServiceClient(InstanceContext callbackInstance, string configName)

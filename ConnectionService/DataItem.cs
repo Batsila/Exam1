@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Shared
 {
+    /// <summary>
+    /// Data transfer object
+    /// </summary>
     public class DataItem
     {
         public int Id { get; set; }

@@ -1,15 +1,9 @@
 ﻿using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-
 namespace ServerApp.Model
 {
+    /// <summary>
+    /// This is the class of the model that describes the information written to the table.
+    /// </summary>
     public class ClientModel : BindableBase
     {
         private int _id;
@@ -45,23 +39,6 @@ namespace ServerApp.Model
         {
             get { return _isActive; }
             set { SetProperty(ref _isActive, value); }
-        }
-
-        private string _status;
-
-        public string Status
-        {
-            get {
-                if (_isActive)
-                {
-                    return _status = "D:\\Job\\Exam1\\ServerApp\\Properties\\online.png";
-
-                }
-                else
-                {
-                    return _status = "D:\\Job\\Exam1\\ServerApp\\Properties\\offline.png";
-                }
-            }
         }
 
     }

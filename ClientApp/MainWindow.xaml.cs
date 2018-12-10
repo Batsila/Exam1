@@ -11,9 +11,6 @@ namespace ClientApp
     /// </summary>
     public partial class MainWindow : Window
     {
-        // TODO: Shall have an indication to Online / Offline connection.
-
-
         private DuplexServiceClient _proxy;
 
         public MainWindow()
@@ -22,26 +19,38 @@ namespace ClientApp
             InitializeClient();
         }
 
+        /// <summary>
+        /// Handling a send event to the server with a connection check
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void BtnSendClick(object sender, RoutedEventArgs e)
         {
-            // TODO: Add exception handling and status change
-            Random rnd = new Random();
-            _proxy.AddItem(new Shared.DataItem
+            InitializeClient();
+            try
             {
+                Random rnd = new Random();
+                _proxy.AddItem(new Shared.DataItem
+                {
 
-                Address = tbAddress.Text,
-                Id = rnd.Next(),
-                IsOnline = cbIsActive.IsChecked ?? false,
-                Model = tbModel.Text,
-                Vendor = tbVendor.Text
+                    Address = tbAddress.Text,
+                    Id = rnd.Next(),
+                    IsOnline = cbIsActive.IsChecked ?? false,
+                    Model = tbModel.Text,
+                    Vendor = tbVendor.Text
 
-            });
-
-            lbConnectStatus.Content = "Online";
-            lbConnectStatus.Foreground = System.Windows.Media.Brushes.Green;
+                });
+            }
+            catch
+            {
+                MessageBox.Show("Server is not active");
+            }
+            
         }
 
-
+        /// <summary>
+        /// Creating a connection and displaying server status
+        /// </summary>
         private void InitializeClient()
         {
             if (_proxy != null)
@@ -73,19 +82,24 @@ namespace ClientApp
             }
             catch
             {
-                btnSend.IsEnabled = false;
                 lbServerStatus.Content = "Off";
             }
         }
 
+        /// <summary>
+        /// Display information of a disabled user
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CallbackItemDeleted(object sender, Shared.DataItem e)
         {
-            // TODO: Detailed information
-            MessageBox.Show($"Item with id {e.Id} was deleted");
-            lbConnectStatus.Content = "Offline";
-            lbConnectStatus.Foreground = System.Windows.Media.Brushes.Red;
+            MessageBox.Show($"Item with id {e.Id} was deleted\nIP adress:   {e.Address}\nModel:   {e.Model}\nVendor:   {e.Address}");
         }
 
+        /// <summary>
+        /// Closing connection
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnClosing(CancelEventArgs e)
         {
             if (_proxy != null)
