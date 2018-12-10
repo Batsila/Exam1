@@ -8,5 +8,6 @@
     <Grid x:Name="gPad" MouseLeftButtonDown="Grid_MouseLeftButtonDown"
           MouseLeftButtonUp="Grid_MouseLeftButtonUp"
           MouseWheel="Grid_MouseWheel"
-          Background="LightGray" />
+          Background="LightGray" >
+    </Grid>
 </Window>

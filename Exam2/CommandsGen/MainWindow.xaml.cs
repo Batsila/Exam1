@@ -72,6 +72,7 @@ namespace CommandsGen
             var newPosition = e.GetPosition(gPad);
 
             var deltaX = newPosition.X - _prevPosition.X;
+            
             if (deltaX > 0)
                 commands.Add(new MouseMoveCommand { CommandName = "RIGHT", Quantity = deltaX });
             else if (deltaX < 0)
@@ -85,6 +86,7 @@ namespace CommandsGen
                 commands.Add(new MouseMoveCommand { CommandName = "UP", Quantity = Math.Abs(deltaY) });
 
             _prevPosition = newPosition;
+
 
             _client.SendCommands(commands.ToArray());
         }
