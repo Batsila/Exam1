@@ -12,76 +12,83 @@ namespace CommandsHandler.Service
 {
     public class CommandsReceiverService : IReceiver
     {
+        private const int TIMEOUT_SEC = 5;
+        private static Dictionary<int, CancellationTokenSource> _processingTasks = new Dictionary<int, CancellationTokenSource>();
         private object _lock = new object();
-        private bool _isFrame = false;
-
-        List<KeyValuePair<string, string> > commandsMap = new List< KeyValuePair<string, string> >();
-
-        private void AddCommand(string key, string value)
-        {
-            lock (_lock)
-            {
-                for (var i = 0; i < commandsMap.Count; ++i)
-                {
-                    if (commandsMap[i].Key == key)
-                    {
-                        commandsMap.RemoveAt(i);
-                        break;
-                    }
-                }
-                commandsMap.Add(new KeyValuePair<string, string>(key, value));
-            }
-        }
 
         public bool SendCommands(params MouseCommandBase[] command)
         {
+            var key = GetCommandsKey(command);
 
-            Task.Factory.StartNew(() =>
+            lock (_lock)
             {
-                var receiveTime = DateTime.Now;
-                if (command.Length == 2)
+                if (_processingTasks.ContainsKey(key))
                 {
-                    if (command[0] is MouseMoveCommand firstCmd && command[1] is MouseMoveCommand secondCmd)
-                    {
-                        AddCommand($"MOOV {firstCmd.CommandName}+{secondCmd.CommandName}",
-                            $"{firstCmd.Quantity}+{secondCmd.Quantity} {receiveTime.ToLongTimeString()}");
-                    }
-                }
-                else if (command.Length == 1)
-                {
-                    var item = command[0];
-                    if (item is WheelCommand zoomCmd)
-                        AddCommand($"ZOOM {zoomCmd.CommandName}", $"{zoomCmd.Quantity} {receiveTime.ToLongTimeString()}");
-                    else if (item is MouseMoveCommand moveCmd)
-                        AddCommand($"MOOV {moveCmd.CommandName}", $"{moveCmd.Quantity} {receiveTime.ToLongTimeString()}");
-                    else
-                        lock (_lock)
-                            commandsMap.Clear();
+                    _processingTasks[key].Cancel();
+                    _processingTasks.Remove(key);
                 }
 
-                System.Threading.Thread.Sleep(TimeSpan.FromSeconds(1));
-            });
-
-            if (!_isFrame)
-            {
-                _isFrame = true;
-                Task.Factory.StartNew(() =>
-                {
-                    System.Threading.Thread.Sleep(TimeSpan.FromSeconds(5));
-                    lock (_lock)
-                    {
-                        foreach (var item in commandsMap)
-                        {
-                            System.Console.WriteLine($"{item.Key} {item.Value}");
-                        }
-                        commandsMap.Clear();
-                    }
-                    _isFrame = false;
-                });
+                var source = new CancellationTokenSource();
+                var token = source.Token;
+                _processingTasks.Add(key, source);
+                Task.Factory.StartNew(() => ComandProcessingTask(command, token), token);
             }
 
             return true;
         }
-        
+
+        private int GetCommandsKey(MouseCommandBase[] command)
+        {
+            unchecked
+            {
+                int result = 37;
+                result *= 397;
+
+                for (int i = 0; i < command.Length; i++)
+                    result += command[i].CommandName.GetHashCode();
+
+                return result;
+            }
+        }
+
+        private void ComandProcessingTask(MouseCommandBase[] commands, CancellationToken token)
+        {
+            var receiveTime = DateTime.Now;
+            var sb = new StringBuilder(receiveTime.ToLongTimeString());
+            sb.Append(" - ");
+
+            if (commands.Length == 2)
+            {
+                if (commands[0] is MouseMoveCommand firstCmd && commands[1] is MouseMoveCommand secondCmd)
+                    sb.Append($"MOOV {firstCmd.CommandName}+{secondCmd.CommandName} {firstCmd.Quantity}+{secondCmd.Quantity}");
+            }
+            else if (commands.Length == 1)
+            {
+                var item = commands[0];
+                if (item is WheelCommand zoomCmd)
+                    sb.Append($"ZOOM {zoomCmd.CommandName} {zoomCmd.Quantity}");
+                else if (item is MouseMoveCommand moveCmd)
+                    sb.Append($"MOOV {moveCmd.CommandName} {moveCmd.Quantity}");
+                else
+                {
+                    lock (_lock)
+                    {
+                        foreach (var task in _processingTasks)
+                            task.Value.Cancel();
+                    }
+
+                    sb.Append($"STOP");
+                    Console.WriteLine(sb.ToString());
+                    return;
+                }
+            }
+
+            Thread.Sleep(TimeSpan.FromSeconds(TIMEOUT_SEC));
+
+            if (token.IsCancellationRequested)
+                return;
+
+            Console.WriteLine(sb.ToString());
+        }
     }
 }
