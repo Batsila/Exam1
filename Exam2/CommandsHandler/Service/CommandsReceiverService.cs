@@ -13,13 +13,21 @@ namespace CommandsHandler.Service
     public class CommandsReceiverService : IReceiver
     {
         private const int TIMEOUT_SEC = 5;
+        /// <summary>
+        /// Dictionary of commands
+        /// </summary>
         private static Dictionary<int, CancellationTokenSource> _processingTasks = new Dictionary<int, CancellationTokenSource>();
         private object _lock = new object();
 
+        /// <summary>
+        /// Processes requests with commands from client
+        /// </summary>
+        /// <param name="command">Commands from client</param>
         public bool SendCommands(params MouseCommandBase[] command)
         {
             var key = GetCommandsKey(command);
 
+            // lock thread to avoid simultaneous access to a resource
             lock (_lock)
             {
                 if (_processingTasks.ContainsKey(key))
@@ -37,6 +45,9 @@ namespace CommandsHandler.Service
             return true;
         }
 
+        /// <summary>
+        /// Returns hashcode of mouse command
+        /// </summary>
         private int GetCommandsKey(MouseCommandBase[] command)
         {
             unchecked
@@ -51,6 +62,9 @@ namespace CommandsHandler.Service
             }
         }
 
+        /// <summary>
+        /// Processes commands for TIMEOUT_SEC time frame
+        /// </summary>
         private void ComandProcessingTask(MouseCommandBase[] commands, CancellationToken token)
         {
             var receiveTime = DateTime.Now;
@@ -71,6 +85,7 @@ namespace CommandsHandler.Service
                     sb.Append($"MOOV {moveCmd.CommandName} {moveCmd.Quantity}");
                 else
                 {
+                    // Lock thread to avoid simultaneous access to a resource
                     lock (_lock)
                     {
                         foreach (var task in _processingTasks)

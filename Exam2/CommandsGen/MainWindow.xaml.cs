@@ -56,12 +56,18 @@ namespace CommandsGen
             _client.Open();
         }
 
+        /// <summary>
+        /// Stars tracking mouse move events
+        /// </summary>
         private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             _prevPosition = e.GetPosition(gPad);
             gPad.MouseMove += Grid_MouseMove;
         }
 
+        /// <summary>
+        /// Stops tracking mouse move events and sends stop command
+        /// </summary>
         private void Grid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             gPad.MouseMove -= Grid_MouseMove;
@@ -70,6 +76,9 @@ namespace CommandsGen
             AddDebugData("STOP");
         }
 
+        /// <summary>
+        /// Tracks mouse move events and sends mouse move commands
+        /// </summary>
         private void Grid_MouseMove(object sender, MouseEventArgs e)
         {
             var commands = new List<MouseMoveCommand>();
@@ -98,6 +107,9 @@ namespace CommandsGen
             AddDebugData(sb.ToString());
         }
 
+        /// <summary>
+        /// Tracks wheel events and sends zoom commands
+        /// </summary>
         private void Grid_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             WheelCommand command = null;
