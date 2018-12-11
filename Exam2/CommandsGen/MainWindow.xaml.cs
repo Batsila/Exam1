@@ -1,6 +1,7 @@
 ﻿using CommandsGen.ServiceReference;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -24,10 +25,12 @@ namespace CommandsGen
     {
         private ReceiverClient _client;
         private Point _prevPosition;
+        private readonly ObservableCollection<string> _debugData = new ObservableCollection<string>();
 
         public MainWindow()
         {
             InitializeComponent();
+            icCommands.ItemsSource = _debugData;
             InitializeClient();
         }
 
@@ -62,22 +65,22 @@ namespace CommandsGen
         private void Grid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             gPad.MouseMove -= Grid_MouseMove;
-            _client.SendCommands(new MouseCommand[] { new StopCommand() });
+            _client.SendCommands(new MouseCommandBase[] { new StopCommand() });
+
+            AddDebugData("STOP");
         }
 
         private void Grid_MouseMove(object sender, MouseEventArgs e)
         {
-            var commands = new List<MouseCommand>();
+            var commands = new List<MouseMoveCommand>();
 
             var newPosition = e.GetPosition(gPad);
 
             var deltaX = newPosition.X - _prevPosition.X;
-            
             if (deltaX > 0)
                 commands.Add(new MouseMoveCommand { CommandName = "RIGHT", Quantity = deltaX });
             else if (deltaX < 0)
                 commands.Add(new MouseMoveCommand { CommandName = "LEFT", Quantity = Math.Abs(deltaX) });
-
 
             var deltaY = newPosition.Y - _prevPosition.Y;
             if (deltaY > 0)
@@ -87,18 +90,27 @@ namespace CommandsGen
 
             _prevPosition = newPosition;
 
-
             _client.SendCommands(commands.ToArray());
+
+            var sb = new StringBuilder("MOVE ");
+            foreach (var item in commands)
+                sb.Append($" {item.CommandName}+{item.Quantity}");
+            AddDebugData(sb.ToString());
         }
 
         private void Grid_MouseWheel(object sender, MouseWheelEventArgs e)
         {
+            WheelCommand command = null;
+
             var delta = e.Delta;
-            // change type to ZoomCommand
             if (delta > 0)
-                _client.SendCommands(new MouseCommand[] { new MouseMoveCommand { CommandName = "IN", Quantity = delta } });
-            else if (delta < 0)
-                _client.SendCommands(new MouseCommand[] { new MouseMoveCommand { CommandName = "OUT", Quantity = Math.Abs(delta) } });
+                command = new WheelCommand { CommandName = "IN", Quantity = delta };
+            else 
+                command = new WheelCommand { CommandName = "OUT", Quantity = Math.Abs(delta) };
+
+            _client.SendCommands(new MouseCommandBase[] { command });
+
+            AddDebugData($"WHEEL {command.CommandName} {command.Quantity}");
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -115,6 +127,11 @@ namespace CommandsGen
                 }
             }
             base.OnClosing(e);
+        }
+
+        private void AddDebugData(string data)
+        {
+            _debugData.Insert(0, $"{DateTime.Now.ToString("mm:ss")}\t{data}");
         }
     }
 }

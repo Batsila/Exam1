@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommandsHandler.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -7,14 +8,14 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CommandsHandler
+namespace CommandsHandler.Service
 {
     public class CommandsReceiverService : IReceiver
     {
         private object _lock = new object();
         private bool _isFrame = false;
 
-        List< KeyValuePair<string, string> > commandsMap = new List< KeyValuePair<string, string> >();
+        List<KeyValuePair<string, string> > commandsMap = new List< KeyValuePair<string, string> >();
 
         private void AddCommand(string key, string value)
         {
@@ -32,7 +33,7 @@ namespace CommandsHandler
             }
         }
 
-        public bool SendCommands(params MouseCommand[] command)
+        public bool SendCommands(params MouseCommandBase[] command)
         {
 
             Task.Factory.StartNew(() =>
@@ -49,10 +50,9 @@ namespace CommandsHandler
                 else if (command.Length == 1)
                 {
                     var item = command[0];
-                    if (item is ZoomCommand zoomCmd)
+                    if (item is WheelCommand zoomCmd)
                         AddCommand($"ZOOM {zoomCmd.CommandName}", $"{zoomCmd.Quantity} {receiveTime.ToLongTimeString()}");
                     else if (item is MouseMoveCommand moveCmd)
-
                         AddCommand($"MOOV {moveCmd.CommandName}", $"{moveCmd.Quantity} {receiveTime.ToLongTimeString()}");
                     else
                         lock (_lock)

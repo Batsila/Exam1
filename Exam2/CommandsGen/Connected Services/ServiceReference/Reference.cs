@@ -15,11 +15,12 @@ namespace CommandsGen.ServiceReference {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="MouseCommand", Namespace="http://schemas.datacontract.org/2004/07/CommandsHandler")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="MouseCommandBase", Namespace="http://schemas.datacontract.org/2004/07/CommandsHandler.Model")]
     [System.SerializableAttribute()]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(CommandsGen.ServiceReference.StopCommand))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(CommandsGen.ServiceReference.MouseMoveCommand))]
-    public partial class MouseCommand : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(CommandsGen.ServiceReference.WheelCommand))]
+    public partial class MouseCommandBase : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
@@ -62,16 +63,39 @@ namespace CommandsGen.ServiceReference {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="StopCommand", Namespace="http://schemas.datacontract.org/2004/07/CommandsHandler")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="StopCommand", Namespace="http://schemas.datacontract.org/2004/07/CommandsHandler.Model")]
     [System.SerializableAttribute()]
-    public partial class StopCommand : CommandsGen.ServiceReference.MouseCommand {
+    public partial class StopCommand : CommandsGen.ServiceReference.MouseCommandBase {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="MouseMoveCommand", Namespace="http://schemas.datacontract.org/2004/07/CommandsHandler")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="MouseMoveCommand", Namespace="http://schemas.datacontract.org/2004/07/CommandsHandler.Model")]
     [System.SerializableAttribute()]
-    public partial class MouseMoveCommand : CommandsGen.ServiceReference.MouseCommand {
+    public partial class MouseMoveCommand : CommandsGen.ServiceReference.MouseCommandBase {
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private double QuantityField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public double Quantity {
+            get {
+                return this.QuantityField;
+            }
+            set {
+                if ((this.QuantityField.Equals(value) != true)) {
+                    this.QuantityField = value;
+                    this.RaisePropertyChanged("Quantity");
+                }
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="WheelCommand", Namespace="http://schemas.datacontract.org/2004/07/CommandsHandler.Model")]
+    [System.SerializableAttribute()]
+    public partial class WheelCommand : CommandsGen.ServiceReference.MouseCommandBase {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private double QuantityField;
@@ -95,10 +119,10 @@ namespace CommandsGen.ServiceReference {
     public interface IReceiver {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IReceiver/SendCommands", ReplyAction="http://tempuri.org/IReceiver/SendCommandsResponse")]
-        bool SendCommands(CommandsGen.ServiceReference.MouseCommand[] command);
+        bool SendCommands(CommandsGen.ServiceReference.MouseCommandBase[] command);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IReceiver/SendCommands", ReplyAction="http://tempuri.org/IReceiver/SendCommandsResponse")]
-        System.Threading.Tasks.Task<bool> SendCommandsAsync(CommandsGen.ServiceReference.MouseCommand[] command);
+        System.Threading.Tasks.Task<bool> SendCommandsAsync(CommandsGen.ServiceReference.MouseCommandBase[] command);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -128,11 +152,11 @@ namespace CommandsGen.ServiceReference {
                 base(binding, remoteAddress) {
         }
         
-        public bool SendCommands(CommandsGen.ServiceReference.MouseCommand[] command) {
+        public bool SendCommands(CommandsGen.ServiceReference.MouseCommandBase[] command) {
             return base.Channel.SendCommands(command);
         }
         
-        public System.Threading.Tasks.Task<bool> SendCommandsAsync(CommandsGen.ServiceReference.MouseCommand[] command) {
+        public System.Threading.Tasks.Task<bool> SendCommandsAsync(CommandsGen.ServiceReference.MouseCommandBase[] command) {
             return base.Channel.SendCommandsAsync(command);
         }
     }

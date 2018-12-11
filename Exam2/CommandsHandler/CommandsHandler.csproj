@@ -45,8 +45,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandsReceiverService.cs" />
-    <Compile Include="IReceiver.cs" />
+    <Compile Include="Service\CommandsReceiverService.cs" />
+    <Compile Include="Service\IReceiver.cs" />
+    <Compile Include="Model\MouseCommandBase.cs" />
+    <Compile Include="Model\MouseMoveCommand.cs" />
+    <Compile Include="Model\StopCommand.cs" />
+    <Compile Include="Model\WheelCommand.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

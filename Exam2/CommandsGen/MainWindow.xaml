@@ -5,9 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid x:Name="gPad" MouseLeftButtonDown="Grid_MouseLeftButtonDown"
-          MouseLeftButtonUp="Grid_MouseLeftButtonUp"
-          MouseWheel="Grid_MouseWheel"
-          Background="LightGray" >
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+        <Grid x:Name="gPad" MouseLeftButtonDown="Grid_MouseLeftButtonDown"
+              MouseLeftButtonUp="Grid_MouseLeftButtonUp"
+              MouseWheel="Grid_MouseWheel"
+              Background="LightGray" 
+              Grid.Column="0">
+        </Grid>
+
+        <ItemsControl x:Name="icCommands" Grid.Column="1" />
     </Grid>
 </Window>
