@@ -6,6 +6,5 @@
         Background="DarkGray">
     <Grid Margin="5">
         <ContentControl prism:RegionManager.RegionName="ContentRegion" />
-        <!--<DataGrid x:Name="grid" HorizontalAlignment="Left" Height="341" Margin="10,10,0,0" VerticalAlignment="Top" Width="529" Loaded="GridLoaded" MouseUp="GridMouseUp"/>-->
     </Grid>
 </Window>

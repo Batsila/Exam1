@@ -1,12 +1,11 @@
 ﻿using ServerApp.Model;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServerApp.Helpers
 {
+    /// <summary>
+    /// Helper class that adds test entries to the table.
+    /// </summary>
     static class StaticData
     {
         public static IEnumerable<ClientModel> GetData()

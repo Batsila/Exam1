@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:prism="http://prismlibrary.com/"
+             xmlns:converters="clr-namespace:ServerApp.Converters"
              prism:ViewModelLocator.AutoWireViewModel="True">
     
     <UserControl.Resources>
@@ -15,6 +16,7 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <converters:StatusToImageConverter  x:Key="statusConverter" />
     </UserControl.Resources>
     
     <Grid>
@@ -22,10 +24,16 @@
                   AlternationCount="2" ItemContainerStyle="{StaticResource AlternatingListViewItemStyle}">
             <ListView.View>
                 <GridView AllowsColumnReorder="False">
+                    <GridViewColumn Header="Status" Width="50">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding IsActive, Converter={StaticResource statusConverter}}" Width="25" Height="25" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding Address}" Header="IP Address" Width="100"/>
                     <GridViewColumn DisplayMemberBinding="{Binding Vendor}" Header="Vendor" Width="125"/>
                     <GridViewColumn DisplayMemberBinding="{Binding Model}" Header="Model Name" Width="100"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding IsActive}" Header="Realtime Monitoring" Width="100"/>
                 </GridView>
             </ListView.View>
             <i:Interaction.Triggers>
@@ -34,28 +42,5 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </ListView>
-        
-        <!--<DataGrid ItemsSource="{Binding Data}" CanUserAddRows="False"
-                  AlternationCount="2" CanUserResizeColumns="False"
-                  CanUserResizeRows="False" AutoGenerateColumns="False">
-            <DataGrid.RowStyle>
-                <Style TargetType="DataGridRow">
-                    <Style.Triggers>
-                        <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                            <Setter Property="Background" Value="DarkGray"></Setter>
-                        </Trigger>
-                        <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                            <Setter Property="Background" Value="Gray"></Setter>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </DataGrid.RowStyle>
-            <DataGrid.Columns>
-                <DataGridTextColumn Width="200" Header="IP" Binding="{Binding Address}" />
-                <DataGridTextColumn Width="120" Header="First Name" Binding="{Binding Vendor}" />
-                <DataGridTextColumn Width="120" Header="Last Name" Binding="{Binding Model}" />
-                <DataGridTextColumn Width="80" Header="Online" Binding="{Binding IsActive}" />
-            </DataGrid.Columns>
-        </DataGrid>-->
     </Grid>
 </UserControl>

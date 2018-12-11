@@ -1,12 +1,9 @@
 ﻿using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace ServerApp.Model
 {
+    /// <summary>
+    /// This is the class of the model that describes the information written to the table.
+    /// </summary>
     public class ClientModel : BindableBase
     {
         private int _id;
@@ -43,5 +40,6 @@ namespace ServerApp.Model
             get { return _isActive; }
             set { SetProperty(ref _isActive, value); }
         }
+
     }
 }

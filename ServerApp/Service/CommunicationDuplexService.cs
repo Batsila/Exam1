@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Shared;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
-using Shared;
 
 namespace ServerApp.Service
 {
+    /// <summary>
+    /// The implementation of the duplex service interface.
+    /// </summary>
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Multiple)]
     internal class CommunicationDuplexService : IServerDuplexService
     {
@@ -20,18 +20,25 @@ namespace ServerApp.Service
 
         public event EventHandler<DataItem> ItemAddRequest;
 
+
+        /// <summary>
+        /// Service methods that handles item add requests from clients
+        /// </summary>
         public void AddItem(DataItem item)
         {
             ItemAddRequest?.Invoke(this, item);
         }
 
+        /// <summary>
+        /// Notify all connected clients that item was removed
+        /// </summary>
         public void RemoveItem(DataItem item)
         {
             lock (_sync)
             {
                 for (int i = 0; i < _callbackChannels.Count; i++)
                 {
-                    if (((ICommunicationObject)_callbackChannels[i]).State != CommunicationState.Opened)
+                    if (((ICommunicationObject) _callbackChannels[i]).State != CommunicationState.Opened)
                     {
                         _callbackChannels.RemoveAt(i);
                         continue;
@@ -49,6 +56,9 @@ namespace ServerApp.Service
             }
         }
 
+        /// <summary>
+        /// Client connection handler
+        /// </summary>
         public void Connect()
         {
             try
@@ -68,6 +78,9 @@ namespace ServerApp.Service
             }
         }
 
+        /// <summary>
+        /// Client disconnect handler
+        /// </summary>
         public void Disconnect()
         {
             IClientDuplexCallback callbackChannel = OperationContext.Current.GetCallbackChannel<IClientDuplexCallback>();

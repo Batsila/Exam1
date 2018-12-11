@@ -5,6 +5,9 @@ using System.ServiceModel;
 
 namespace ServerApp.Managers
 {
+    /// <summary>
+    /// Class responsible for WCF service management (start/stop, communication)
+    /// </summary>
     public class CommunicationManager : IDisposable
     {
         private readonly CommunicationDuplexService _comService;
@@ -15,13 +18,13 @@ namespace ServerApp.Managers
             _comService = new CommunicationDuplexService();
             _comService.ItemAddRequest += ServiceItemAddRequest;
 
-            // TODO: move to config file
-            var baseAddress = new Uri("net.tcp://localhost:9000/Service");
-            _serviceHost = new ServiceHost(_comService, baseAddress);
-
+            _serviceHost = new ServiceHost(_comService);
             _serviceHost.Open();
         }
 
+        /// <summary>
+        /// Item adding delegate
+        /// </summary>
         private void ServiceItemAddRequest(object sender, Shared.DataItem e)
         {
             if (e == null)
@@ -37,6 +40,9 @@ namespace ServerApp.Managers
             });
         }
 
+        /// <summary>
+        /// Method notifies connected clients about item deletion
+        /// </summary>
         public void ItemDeleted(ClientModel deletedItem)
         {
             if (deletedItem == null)
@@ -54,8 +60,6 @@ namespace ServerApp.Managers
 
 
         public event EventHandler<ClientModel> ItemAdding;
-
-
 
         public void Dispose()
         {
