@@ -103,7 +103,7 @@ namespace CommandsGen
 
             var sb = new StringBuilder("MOVE ");
             foreach (var item in commands)
-                sb.Append($" {item.CommandName}+{item.Quantity}");
+                sb.Append(string.Format(" {0}+{1}", item.CommandName, item.Quantity));
             AddDebugData(sb.ToString());
         }
 
@@ -122,7 +122,7 @@ namespace CommandsGen
 
             _client.SendCommands(new MouseCommandBase[] { command });
 
-            AddDebugData($"WHEEL {command.CommandName} {command.Quantity}");
+            AddDebugData(string.Format("WHEEL {0} {1}", command.CommandName, command.Quantity));
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -143,7 +143,7 @@ namespace CommandsGen
 
         private void AddDebugData(string data)
         {
-            _debugData.Insert(0, $"{DateTime.Now.ToString("mm:ss")}\t{data}");
+            _debugData.Insert(0, string.Format("{0}\t{1}", DateTime.Now.ToString("mm:ss"), data));
         }
     }
 }
