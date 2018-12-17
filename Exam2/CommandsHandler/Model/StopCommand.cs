@@ -13,7 +13,10 @@ namespace CommandsHandler.Model
         [DataMember]
         public override string CommandName
         {
-            get => "STOP";
+            get
+            {
+                return "STOP";
+            }
             set { }
         }
     }

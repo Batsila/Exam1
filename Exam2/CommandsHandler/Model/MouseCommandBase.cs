@@ -15,5 +15,10 @@ namespace CommandsHandler.Model
     {
         [DataMember]
         public abstract string CommandName { get; set; }
+
+        public static implicit operator MouseCommandBase(Type v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

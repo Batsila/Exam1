@@ -73,16 +73,30 @@ namespace CommandsHandler.Service
 
             if (commands.Length == 2)
             {
-                if (commands[0] is MouseMoveCommand firstCmd && commands[1] is MouseMoveCommand secondCmd)
-                    sb.Append($"MOOV {firstCmd.CommandName}+{secondCmd.CommandName} {firstCmd.Quantity}+{secondCmd.Quantity}");
+                if (commands[0].GetType() == typeof(MouseMoveCommand) && commands[1].GetType() == typeof(MouseMoveCommand))
+                {
+                    MouseMoveCommand firstCmd = (MouseMoveCommand) commands[0];
+                    MouseMoveCommand secondCmd = (MouseMoveCommand)commands[1];
+                    string str = string.Concat("MOOV ", firstCmd.CommandName, "+", secondCmd.CommandName, " ", firstCmd.Quantity, "+", secondCmd.Quantity);
+                    sb.Append(str);
+
+                }
             }
             else if (commands.Length == 1)
             {
                 var item = commands[0];
-                if (item is WheelCommand zoomCmd)
-                    sb.Append($"ZOOM {zoomCmd.CommandName} {zoomCmd.Quantity}");
-                else if (item is MouseMoveCommand moveCmd)
-                    sb.Append($"MOOV {moveCmd.CommandName} {moveCmd.Quantity}");
+                if (item.GetType() == typeof(WheelCommand))
+                {
+                    WheelCommand zoomCmd = (WheelCommand) item;
+                    string str = string.Concat("Zoom ", zoomCmd.CommandName, " ", zoomCmd.Quantity);
+                    sb.Append(str);
+                }
+                else if (item.GetType() == typeof(MouseMoveCommand))
+                {
+                    MouseMoveCommand moveCmd = (MouseMoveCommand) item;
+                    string str = string.Concat("MOOV ", moveCmd.CommandName, " ", moveCmd.Quantity);
+                    sb.Append(str);
+                }
                 else
                 {
                     // Lock thread to avoid simultaneous access to a resource
@@ -92,7 +106,7 @@ namespace CommandsHandler.Service
                             task.Value.Cancel();
                     }
 
-                    sb.Append($"STOP");
+                    sb.Append("STOP");
                     Console.WriteLine(sb.ToString());
                     return;
                 }
