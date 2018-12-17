@@ -73,11 +73,11 @@ namespace CommandsHandler.Service
 
             if (commands.Length == 2)
             {
-                if (commands[0].GetType() == typeof(MouseMoveCommand) && commands[1].GetType() == typeof(MouseMoveCommand))
+                if (commands[0] is MouseMoveCommand && commands[1] is MouseMoveCommand)
                 {
-                    MouseMoveCommand firstCmd = (MouseMoveCommand) commands[0];
-                    MouseMoveCommand secondCmd = (MouseMoveCommand)commands[1];
-                    string str = string.Concat("MOOV ", firstCmd.CommandName, "+", secondCmd.CommandName, " ", firstCmd.Quantity, "+", secondCmd.Quantity);
+                    var firstCmd = (MouseMoveCommand) commands[0];
+                    var secondCmd = (MouseMoveCommand)commands[1];
+                    string str = string.Format("MOOV {0}+{1} {2}+{3}", firstCmd.CommandName, secondCmd.CommandName, firstCmd.Quantity, secondCmd.Quantity);
                     sb.Append(str);
 
                 }
@@ -85,16 +85,16 @@ namespace CommandsHandler.Service
             else if (commands.Length == 1)
             {
                 var item = commands[0];
-                if (item.GetType() == typeof(WheelCommand))
+                if (item is WheelCommand)
                 {
-                    WheelCommand zoomCmd = (WheelCommand) item;
-                    string str = string.Concat("Zoom ", zoomCmd.CommandName, " ", zoomCmd.Quantity);
+                    var zoomCmd = (WheelCommand) item;
+                    string str = string.Format("ZOOM {0} {1}", zoomCmd.CommandName, zoomCmd.Quantity);
                     sb.Append(str);
                 }
-                else if (item.GetType() == typeof(MouseMoveCommand))
+                else if (item is MouseMoveCommand)
                 {
-                    MouseMoveCommand moveCmd = (MouseMoveCommand) item;
-                    string str = string.Concat("MOOV ", moveCmd.CommandName, " ", moveCmd.Quantity);
+                    var moveCmd = (MouseMoveCommand)item;
+                    string str = string.Format("MOOV {0} {1}", moveCmd.CommandName, moveCmd.Quantity);
                     sb.Append(str);
                 }
                 else
